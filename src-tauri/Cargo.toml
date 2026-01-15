@@ -1,9 +1,9 @@
 [package]
 name = "rpp"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-edition = "2021"
+version = "0.0.1"
+description = "A application manager for custom desktop or web services activities."
+authors = ["Manuel Cabral"]
+edition = "2026"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
