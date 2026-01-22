@@ -321,15 +321,21 @@ fn _extract_version(text: &str, token: &str) -> Option<String> {
     }
 }
 
-pub fn check_current_cdp_browser() -> Option<CdpBrowserInfo> {
+pub async fn check_current_cdp_browser() -> Option<CdpBrowserInfo> {
     let url = "http://localhost:4969/json/version";
-    
-    let body_str = actix_rt::System::new()
-        .block_on(async {
-            let client = awc::Client::default();
-            let mut response = client.get(url).send().await.ok()?;
-            response.body().await.ok()
-        })?;
+
+    let resp = reqwest::get(url).await.map_err(|err| {
+        println!("Failed to fetch CDP version info: {}", err);
+        err
+    }).ok()?;
+
+    if !resp.status().is_success() {
+        return None;
+    }
+    let body_str = resp.bytes().await.map_err(|err| {
+        println!("Failed to read response body: {}", err);
+        err
+    }).ok()?;
     
     let body_str = String::from_utf8(body_str.to_vec()).ok()?;
     let data: Value = serde_json::from_str(&body_str).ok()?;
