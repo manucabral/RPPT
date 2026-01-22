@@ -1,15 +1,10 @@
-import "./App.css";
-import LeftPanel from "./components/LeftPanel";
-import RightPanel from "./components/RightPanel";
 
+import InstalledPresences from "./features/presences/components/InstalledPresences";
 
-export const App = () => {
-  return (
-    <main className="flex flex-row min-h-screen flex-col items-center justify-center bg-black">
-      <LeftPanel />
-      <RightPanel />
-    </main>
-  );
+export default function App() {
+    return (
+        <div className="flex flex-col text-white">
+            <InstalledPresences />
+        </div>
+    );
 }
-
-export default App;

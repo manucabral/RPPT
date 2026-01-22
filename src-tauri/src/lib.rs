@@ -9,10 +9,7 @@ static CURRENT_CDP_BROWSER: Lazy<RwLock<Option<browser::CdpBrowserInfo>>> =
 
 #[tauri::command]
 async fn refresh_installed_browsers() -> Result<(), String> {
-    let browsers = tauri::async_runtime::spawn_blocking(|| browser::installed_browsers())
-        .await
-        .map_err(|e| format!("spawn failed: {e}"))?;
-
+    let browsers = browser::installed_browsers();
     let mut lock = INSTALLED_BROWSERS.write().unwrap_or_else(|e| e.into_inner());
     *lock = browsers;
     Ok(())
@@ -27,7 +24,7 @@ fn get_installed_browsers() -> Result<Vec<browser::RawBrowser>, String> {
 
 #[tauri::command]
 async fn refresh_current_cdp_browser() {
-    let cdp_browser = browser::check_current_cdp_browser();
+    let cdp_browser = browser::check_current_cdp_browser().await;
     let mut lock = CURRENT_CDP_BROWSER.write().unwrap_or_else(|e| e.into_inner());
     *lock = cdp_browser;
 }
@@ -35,6 +32,7 @@ async fn refresh_current_cdp_browser() {
 #[tauri::command]
 fn get_current_cdp_browser() -> Option<browser::CdpBrowserInfo> {
     let lock = CURRENT_CDP_BROWSER.read().unwrap_or_else(|e| e.into_inner());
+    println!("Current CDP browser: {:?}", *lock);
     lock.clone()
 }
 

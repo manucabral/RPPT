@@ -336,7 +336,6 @@ pub async fn check_current_cdp_browser() -> Option<CdpBrowserInfo> {
         println!("Failed to read response body: {}", err);
         err
     }).ok()?;
-    
     let body_str = String::from_utf8(body_str.to_vec()).ok()?;
     let data: Value = serde_json::from_str(&body_str).ok()?;
     let cdp: CdpVersionResponse = serde_json::from_value(data.clone()).ok()?;
