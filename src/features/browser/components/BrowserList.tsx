@@ -27,7 +27,7 @@ export default function BrowserList({
                     Installed Browsers
                 </h2>
             </div>
-            <div className="flex flex-col gap-3 overflow-y-auto h-full">
+            <div className="flex flex-col gap-2 h-full">
                 {browsers.length === 0 ? (
                     <p className="text-gray-500 text-sm">No browsers detected</p>
                 ) : (

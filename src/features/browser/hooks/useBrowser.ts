@@ -68,16 +68,36 @@ export function useBrowser() {
 
     const launchBrowserByName = async (browserName: string) => {
         try {
-            await invoke("launch_browser_by_name", { 
+            if (currentBrowser !== null)
+            {
+                alert("A browser is already running. Please close it before launching a new one.");
+                return;
+            }
+            setIsLoading(true);
+            console.log(`Launching browser: ${browserName}`);
+            await invoke("launch_browser_by_name", {
                 browserName: browserName,
                 profileName: "Test",
                 dryRun: false,
-                remote_debugging_port: 4969,
-                remote_debugging_address: "*"
+                remoteDebugPort: 4969,
+                remoteAllowOrigins: "*"
             });
             console.log(`Launched browser: ${browserName}`);
         } catch (error) {
             console.error(`Error launching browser ${browserName}:`, error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const closeCurrentBrowser = async () => {
+        try {
+            setIsLoading(true);
+            await invoke("close_current_cdp_browser");
+        } catch (error) {
+            console.error("Error closing browser:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -90,5 +110,6 @@ export function useBrowser() {
         getInstalledBrowsers,
         refreshInstalledBrowsers,
         launchBrowserByName,
+        closeCurrentBrowser
     };
 }
