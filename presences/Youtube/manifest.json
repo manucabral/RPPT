@@ -1,0 +1,8 @@
+{
+  "name": "YouTube",
+  "description": "Displays the current video playing on YouTube",
+  "client_id": "1298428908680511649",
+  "entry": "main.py",
+  "web": true,
+  "interval": 10
+}
